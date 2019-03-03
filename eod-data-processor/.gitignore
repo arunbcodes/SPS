@@ -26,5 +26,6 @@ HELP.md
 /nbdist/
 /.nb-gradle/
 *.idea/*
+.idea/
 
 
