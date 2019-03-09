@@ -1,0 +1,78 @@
+// When you apply the io.spring.dependency-management plugin,
+// Spring Boot’s plugin will automatically import the spring-boot-dependencies bom from the version of Spring Boot that you are using.
+// This provides a similar dependency management experience to the one that’s enjoyed by Maven users. For example,
+// it allows you to omit version numbers when declaring dependencies that are managed in the bom.
+// To make use of this functionality, simply declare dependencies in the usual way but omit the version number:
+// eg. implementation 'org.springframework.boot:spring-boot-starter-web' as defined below
+
+//Each release of Spring Boot provides a curated list of dependencies that it supports.
+// In practice, you do not need to provide a version for any of these dependencies in your build configuration,
+// as Spring Boot manages that for you. When you upgrade Spring Boot itself, these dependencies are upgraded as well in a consistent way.
+//
+//[Note]
+//You can still specify a version and override Spring Boot’s recommendations if you need to do so.
+//
+//The curated list contains all the spring modules that you can use with Spring Boot as well as a refined list of third party libraries.
+// The list is available as a spring-boot-dependencies that can be used with both Maven and Gradle.
+
+//Note: Each release of Spring Boot is associated with a base version of the Spring Framework. We highly recommend that you not specify its version.
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.stock.strategy'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+dependencies{
+
+    /*
+    Read the difference between compile and implementation below
+     */
+    compile("org.springframework.boot:spring-boot-starter-web")
+    implementation 'org.springframework.boot:spring-boot-starter-web-services'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+/*
+* Executable jars can be built using the bootJar task.
+* The task is automatically created when the java plugin is applied
+* The assemble task is automatically configured to depend upon the bootJar task
+* so running assemble (or build) will also run the bootJar task
+ */
+bootJar {
+    baseName = 'equity-data-processor'
+    version =  '0.1.0'
+}
+
+/*
+https://stackoverflow.com/questions/44493378/whats-the-difference-between-implementation-and-compile-in-gradle
+
+* The compile configuration is now deprecated and should be replaced by implementation or api
+
+* Dependencies appearing in the api configurations will be transitively exposed to consumers of the library,
+and as such will appear on the compile classpath of consumers.
+
+* Dependencies found in the implementation configuration will, on the other hand,
+    not be exposed to consumers, and therefore not leak into the consumers' compile classpath.
+    This comes with several benefits:
+ - dependencies do not leak into the compile classpath of consumers anymore, so you will never accidentally depend on a transitive dependency
+ - faster compilation thanks to reduced classpath size
+ - less recompilations when implementation dependencies change: consumers would not need to be recompiled
+ - cleaner publishing: when used in conjunction with the new maven-publish plugin,
+    Java libraries produce POM files that distinguish exactly between what is required
+    to compile against the library and what is required to use the library at runtime (in other words, don't mix what is needed to compile the library itself and what is needed to compile against the library).
+* The compile configuration still exists, but should not be used as it will not offer
+    the guarantees that the api and implementation configurations provide.
+* Who are the "consumers" mentioned above?
+* the consumer is the module using the library. in the case of Android, it's the Android application.
+*  if your app depends on library x which itself depends on y,z. if you use implementation only x api
+    will be exposed, but if you use api y,z also will be exposed.
+ */
