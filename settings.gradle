@@ -26,3 +26,5 @@ include 'services:webservice'
 
 rootProject.name = 'SPS'
 include 'equity-data-processor'
+include 'options-chain-data-processor'
+

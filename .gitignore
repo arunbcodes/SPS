@@ -21,6 +21,36 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+### Intellij ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
+
+*.iml
+/*.iml
 .idea/
+out/
+
+### MacOS#
+*/.DS_Store
 .DS_Store
-SPS.iml
+
+### Gradle ###
+.gradle
+/.gradle
+.gradle/*
+*/.gradle
+build/
+
+
+### Eclipse ###
+*.pydevproject
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
