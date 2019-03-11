@@ -36,9 +36,8 @@ out/
 
 ### Gradle ###
 .gradle
-/.gradle
-.gradle/*
-*/.gradle
+.*
+!/.gitignore
 build/
 
 
